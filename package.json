@@ -33,6 +33,10 @@
   "scripts": {
     "uglify": "uglifyjs node_modules/jquery/dist/jquery.min.js assets/js/plugins/jquery.fitvids.js assets/js/plugins/jquery.greedy-navigation.js assets/js/plugins/jquery.magnific-popup.js assets/js/plugins/jquery.smooth-scroll.min.js assets/js/plugins/stickyfill.min.js assets/js/_main.js -c -m -o assets/js/main.min.js",
     "watch:js": "onchange \"assets/js/**/*.js\" -e \"assets/js/main.min.js\" -- npm run build:js",
-    "build:js": "npm run uglify"
+    "build:js": "npm run uglify",
+    "check:js": "node --check assets/js/_main.js && node --check assets/js/show_publications.js",
+    "build:content": "python3 markdown_generator/publications.py && python3 markdown_generator/talks.py && python3 markdown_generator/pubsFromBib.py",
+    "check:content": "python3 markdown_generator/publications.py --dry-run && python3 markdown_generator/talks.py --dry-run && python3 markdown_generator/pubsFromBib.py --dry-run",
+    "build:talkmap": "python3 talkmap.py"
   }
 }

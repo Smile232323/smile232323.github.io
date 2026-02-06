@@ -1,0 +1,194 @@
+.home-page-content {
+  font-family: "Arial Rounded MT Bold", "Verdana", sans-serif;
+  font-size: 15px;
+}
+
+.home-page-content .main-heading {
+  align-items: center;
+  color: #ca6f6f;
+  display: flex;
+  font-family: "Permanent Marker", cursive;
+  gap: 0.5rem;
+  justify-content: center;
+  text-align: center;
+}
+
+.home-page-content .heading-icon {
+  border-radius: 6px;
+}
+
+.home-page-content a {
+  color: #ca6f6f;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.home-page-content a:hover {
+  color: #c71585;
+  text-decoration: underline;
+}
+
+.home-page-content .experience-container {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.home-page-content .experience-card {
+  align-items: center;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  display: flex;
+  margin-bottom: 0;
+  padding: 16px;
+  transition: box-shadow 0.3s ease;
+}
+
+.home-page-content .experience-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.home-page-content .experience-logo {
+  border-radius: 8px;
+  height: 60px;
+  margin-right: 20px;
+  object-fit: contain;
+  width: 60px;
+}
+
+.home-page-content .experience-info {
+  font-family: "Segoe UI", sans-serif;
+}
+
+.home-page-content .experience-info strong {
+  font-size: 1.1em;
+}
+
+.home-page-content .publication-card,
+.home-page-content .project-card {
+  align-items: center;
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #5f6368;
+  display: flex;
+  margin-bottom: 20px;
+  padding: 3px;
+  transition: box-shadow 0.3s ease;
+}
+
+.home-page-content .publication-card:hover,
+.home-page-content .project-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.home-page-content .publication-card > div > strong,
+.home-page-content .publication-card > div > div > strong,
+.home-page-content .project-card > div > strong,
+.home-page-content .project-card > div > div > strong {
+  color: #202124;
+}
+
+.home-page-content .publication-card i,
+.home-page-content .project-card i {
+  color: #6b7280;
+}
+
+.home-page-content .publication-card.featured {
+  background: #fef5f1;
+  border-color: #f5bba7;
+  box-shadow: 0 4px 8px rgba(242, 166, 120, 0.2);
+  z-index: 10;
+}
+
+.home-page-content .publication-card.featured:hover {
+  box-shadow: 0 8px 16px rgba(242, 166, 120, 0.4);
+}
+
+.home-page-content .pub-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.home-page-content .pub-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+.home-page-content .pub-button:hover {
+  background-color: #e0e0e0;
+}
+
+.home-page-content .pub-button.active {
+  background-color: #ca6f6f;
+  border-color: #ca6f6f;
+  color: #fff;
+}
+
+.home-page-content .media-row {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+}
+
+.home-page-content .pub-media,
+.home-page-content .project-media {
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.home-page-content .pub-media {
+  height: 120px;
+  width: 200px;
+}
+
+.home-page-content img.pub-media,
+.home-page-content img.project-media {
+  height: 100px;
+  object-fit: cover;
+}
+
+.home-page-content .project-media {
+  width: 200px;
+}
+
+.home-page-content .author-list {
+  font-size: 13px;
+}
+
+.home-page-content .venue-tag {
+  color: #83a1c7;
+}
+
+@media (max-width: 768px) {
+  .home-page-content .media-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .home-page-content .pub-media,
+  .home-page-content .project-media {
+    height: auto;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page-content .experience-card,
+  .home-page-content .publication-card,
+  .home-page-content .project-card,
+  .home-page-content .pub-button,
+  .home-page-content a {
+    transition: none;
+  }
+}

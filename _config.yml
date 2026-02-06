@@ -11,10 +11,10 @@ locale                   : "en-US"
 title                    : "Selen Su / Personal Homepage"
 title_separator          : "-"
 name                     : Selen
-description              : &description "personal description"
-url                      : https://selen-suyue.github.io
+description              : &description "Undergraduate researcher in Computer Vision and Robot Learning at Xidian University"
+url                      : https://smile232323.github.io
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
-repository               : "Selen-Suyue/Selen"
+repository               : "Smile232323/smile232323.github.io"
 
 # Site Author - The following control what appear as part of the author content on the side bar.
 #               If a field is blank the icon and link will not appear, otherwise it will be shown.
@@ -119,7 +119,7 @@ social:
 
 # Analytics
 analytics:
-  provider               :  "false" # false (default), "google", "google-universal", "google-analytics-4", "custom"
+  provider               : false # false (default), "google", "google-universal", "google-analytics-4", "custom"
   google:
     tracking_id          :
 

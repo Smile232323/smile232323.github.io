@@ -1,160 +1,365 @@
-#!/usr/bin/env python
-# coding: utf-8
+#!/usr/bin/env python3
+from __future__ import annotations
 
-# # Publications markdown generator for academicpages
-# 
-# Takes a set of bibtex of publications and converts them for use with [academicpages.github.io](academicpages.github.io). This is an interactive Jupyter notebook ([see more info here](http://jupyter-notebook-beginner-guide.readthedocs.io/en/latest/what_is_jupyter.html)). 
-# 
-# The core python code is also in `pubsFromBibs.py`. 
-# Run either from the `markdown_generator` folder after replacing updating the publist dictionary with:
-# * bib file names
-# * specific venue keys based on your bib file preferences
-# * any specific pre-text for specific files
-# * Collection Name (future feature)
-# 
-# TODO: Make this work with other databases of citations, 
-# TODO: Merge this with the existing TSV parsing solution
-
-
-from pybtex.database.input import bibtex
-import pybtex.database.input.bibtex 
-from time import strptime
-import string
+import argparse
+import datetime as dt
 import html
-import os
+import pathlib
 import re
+import sys
+from dataclasses import dataclass
+from typing import Dict, Iterable, Tuple
 
-#todo: incorporate different collection types rather than a catch all publications, requires other changes to template
-publist = {
-    "proceeding": {
-        "file" : "proceedings.bib",
-        "venuekey": "booktitle",
-        "venue-pretext": "In the proceedings of ",
-        "collection" : {"name":"publications",
-                        "permalink":"/publication/"}
-        
-    },
-    "journal":{
-        "file": "pubs.bib",
-        "venuekey" : "journal",
-        "venue-pretext" : "",
-        "collection" : {"name":"publications",
-                        "permalink":"/publication/"}
-    } 
+SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+
+
+@dataclass(frozen=True)
+class SourceConfig:
+    file: pathlib.Path
+    venue_key: str
+    venue_prefix: str
+    collection_name: str = "publications"
+    collection_permalink: str = "/publication/"
+
+
+DEFAULT_SOURCES: Dict[str, SourceConfig] = {
+    "proceeding": SourceConfig(
+        file=SCRIPT_DIR / "proceedings.bib",
+        venue_key="booktitle",
+        venue_prefix="In the proceedings of ",
+    ),
+    "journal": SourceConfig(
+        file=SCRIPT_DIR / "pubs.bib",
+        venue_key="journal",
+        venue_prefix="",
+    ),
 }
 
-html_escape_table = {
-    "&": "&amp;",
-    '"': "&quot;",
-    "'": "&apos;"
-    }
+MONTH_NAME_MAP = {
+    "jan": 1,
+    "feb": 2,
+    "mar": 3,
+    "apr": 4,
+    "may": 5,
+    "jun": 6,
+    "jul": 7,
+    "aug": 8,
+    "sep": 9,
+    "oct": 10,
+    "nov": 11,
+    "dec": 12,
+}
 
-def html_escape(text):
-    """Produce entities within text."""
-    return "".join(html_escape_table.get(c,c) for c in text)
+
+def normalize(value: object) -> str:
+    if value is None:
+        return ""
+    text = str(value).strip()
+    return "" if text.lower() in {"nan", "none"} else text
 
 
-for pubsource in publist:
-    parser = bibtex.Parser()
-    bibdata = parser.parse_file(publist[pubsource]["file"])
+def strip_bibtex_markup(text: str) -> str:
+    return normalize(text).replace("{", "").replace("}", "").replace("\\", "")
 
-    #loop through the individual references in a given bibtex file
-    for bib_id in bibdata.entries:
-        #reset default date
-        pub_year = "1900"
-        pub_month = "01"
-        pub_day = "01"
-        
-        b = bibdata.entries[bib_id].fields
-        
+
+def yaml_quote(text: str) -> str:
+    escaped = text.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{escaped}"'
+
+
+def slugify(text: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+    return slug or "publication"
+
+
+def parse_month(value: str) -> int:
+    raw = normalize(value)
+    if not raw:
+        return 1
+
+    cleaned = raw.strip("{} ").lower()
+
+    if cleaned.isdigit():
+        month = int(cleaned)
+        if 1 <= month <= 12:
+            return month
+        raise ValueError(f"invalid month number: {value}")
+
+    month_token = cleaned[:3]
+    if month_token in MONTH_NAME_MAP:
+        return MONTH_NAME_MAP[month_token]
+
+    raise ValueError(f"invalid month format: {value}")
+
+
+def parse_day(value: str) -> int:
+    raw = normalize(value)
+    if not raw:
+        return 1
+
+    cleaned = raw.strip("{} ")
+    if cleaned.isdigit():
+        day = int(cleaned)
+        if 1 <= day <= 31:
+            return day
+
+    raise ValueError(f"invalid day format: {value}")
+
+
+def parse_date(fields: Dict[str, str]) -> str:
+    raw_year = normalize(fields.get("year"))
+    if not raw_year or not raw_year.isdigit():
+        raise ValueError("missing or invalid year")
+
+    year = int(raw_year)
+    month = parse_month(fields.get("month", "1"))
+    day = parse_day(fields.get("day", "1"))
+
+    try:
+        return dt.date(year, month, day).isoformat()
+    except ValueError as error:
+        raise ValueError(f"invalid date combination: {error}") from error
+
+
+def build_citation(entry, title: str, venue: str, year: str) -> str:
+    author_parts = []
+    for author in entry.persons.get("author", []):
+        first = normalize(" ".join(author.first_names))
+        last = normalize(" ".join(author.last_names))
+        full_name = normalize(f"{first} {last}")
+        if full_name:
+            author_parts.append(full_name)
+
+    author_text = ", ".join(author_parts)
+    components = [author_text, f'"{title}."', venue, f"{year}."]
+    return " ".join(part for part in components if part).strip()
+
+
+def render_markdown(
+    title: str,
+    pub_date: str,
+    venue: str,
+    citation: str,
+    permalink: str,
+    collection_name: str,
+    note: str,
+    paper_url: str,
+) -> str:
+    front_matter = [
+        "---",
+        f"title: {yaml_quote(title)}",
+        f"collection: {collection_name}",
+        f"permalink: {permalink}",
+        f"date: {pub_date}",
+        f"venue: {yaml_quote(venue)}",
+    ]
+
+    if note:
+        front_matter.append(f"excerpt: {yaml_quote(note)}")
+    if paper_url:
+        front_matter.append(f"paperurl: {yaml_quote(paper_url)}")
+
+    front_matter.append(f"citation: {yaml_quote(citation)}")
+    front_matter.append("---")
+
+    body = []
+    if note:
+        body.append(note)
+
+    if paper_url:
+        body.append(f"[Access paper here]({paper_url})")
+    else:
+        scholar_query = html.escape(title.replace(" ", "+"))
+        body.append(
+            "Use "
+            f"[Google Scholar](https://scholar.google.com/scholar?q={scholar_query}) "
+            "for full citation"
+        )
+
+    return "\n".join(front_matter) + "\n\n" + "\n\n".join(body).rstrip() + "\n"
+
+
+def write_if_changed(path: pathlib.Path, content: str, dry_run: bool) -> str:
+    if path.exists() and path.read_text(encoding="utf-8") == content:
+        return "unchanged"
+
+    if dry_run:
+        return "dry-run"
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
+    return "written"
+
+
+def iter_sources(selected_sources: Iterable[str]) -> Iterable[Tuple[str, SourceConfig]]:
+    for source_name in selected_sources:
+        config = DEFAULT_SOURCES.get(source_name)
+        if config is None:
+            raise ValueError(f"unknown source: {source_name}")
+        yield source_name, config
+
+
+def create_bib_parser() -> object | None:
+    try:
+        from pybtex.database.input import bibtex
+    except ImportError:
+        return None
+
+    return bibtex.Parser()
+
+
+def process_source(
+    source_name: str,
+    config: SourceConfig,
+    output_dir: pathlib.Path,
+    dry_run: bool,
+    parser: object,
+) -> tuple[int, int, int, int]:
+    if not config.file.exists():
+        print(f"WARNING source={source_name}: missing bib file: {config.file}", file=sys.stderr)
+        return 0, 0, 0, 0
+
+    bibdata = parser.parse_file(str(config.file))
+
+    written_files = 0
+    unchanged_files = 0
+    skipped_entries = 0
+    total_entries = 0
+
+    seen_filenames = set()
+
+    for bib_id, entry in bibdata.entries.items():
+        total_entries += 1
+        fields = entry.fields
+
         try:
-            pub_year = f'{b["year"]}'
+            title = strip_bibtex_markup(fields["title"])
+            pub_date = parse_date(fields)
+            year = pub_date[:4]
+            venue_raw = strip_bibtex_markup(fields[config.venue_key])
+            venue = normalize(f"{config.venue_prefix}{venue_raw}")
+            note = strip_bibtex_markup(fields.get("note", ""))
+            paper_url = normalize(fields.get("url", ""))
 
-            #todo: this hack for month and day needs some cleanup
-            if "month" in b.keys(): 
-                if(len(b["month"])<3):
-                    pub_month = "0"+b["month"]
-                    pub_month = pub_month[-2:]
-                elif(b["month"] not in range(12)):
-                    tmnth = strptime(b["month"][:3],'%b').tm_mon   
-                    pub_month = "{:02d}".format(tmnth) 
-                else:
-                    pub_month = str(b["month"])
-            if "day" in b.keys(): 
-                pub_day = str(b["day"])
+            url_slug = slugify(title)
+            html_filename = f"{pub_date}-{url_slug}"
+            md_filename = f"{html_filename}.md"
 
-                
-            pub_date = pub_year+"-"+pub_month+"-"+pub_day
-            
-            #strip out {} as needed (some bibtex entries that maintain formatting)
-            clean_title = b["title"].replace("{", "").replace("}","").replace("\\","").replace(" ","-")    
+            if md_filename in seen_filenames:
+                skipped_entries += 1
+                print(
+                    f"WARNING source={source_name} id={bib_id}: duplicate output filename {md_filename}",
+                    file=sys.stderr,
+                )
+                continue
 
-            url_slug = re.sub("\\[.*\\]|[^a-zA-Z0-9_-]", "", clean_title)
-            url_slug = url_slug.replace("--","-")
+            seen_filenames.add(md_filename)
 
-            md_filename = (str(pub_date) + "-" + url_slug + ".md").replace("--","-")
-            html_filename = (str(pub_date) + "-" + url_slug).replace("--","-")
+            citation = build_citation(entry=entry, title=title, venue=venue, year=year)
+            permalink = f"{config.collection_permalink}{html_filename}"
 
-            #Build Citation from text
-            citation = ""
+            markdown = render_markdown(
+                title=title,
+                pub_date=pub_date,
+                venue=venue,
+                citation=citation,
+                permalink=permalink,
+                collection_name=config.collection_name,
+                note=note,
+                paper_url=paper_url,
+            )
 
-            #citation authors - todo - add highlighting for primary author?
-            for author in bibdata.entries[bib_id].persons["author"]:
-                citation = citation+" "+author.first_names[0]+" "+author.last_names[0]+", "
-
-            #citation title
-            citation = citation + "\"" + html_escape(b["title"].replace("{", "").replace("}","").replace("\\","")) + ".\""
-
-            #add venue logic depending on citation type
-            venue = publist[pubsource]["venue-pretext"]+b[publist[pubsource]["venuekey"]].replace("{", "").replace("}","").replace("\\","")
-
-            citation = citation + " " + html_escape(venue)
-            citation = citation + ", " + pub_year + "."
-
-            
-            ## YAML variables
-            md = "---\ntitle: \""   + html_escape(b["title"].replace("{", "").replace("}","").replace("\\","")) + '"\n'
-            
-            md += """collection: """ +  publist[pubsource]["collection"]["name"]
-
-            md += """\npermalink: """ + publist[pubsource]["collection"]["permalink"]  + html_filename
-            
-            note = False
-            if "note" in b.keys():
-                if len(str(b["note"])) > 5:
-                    md += "\nexcerpt: '" + html_escape(b["note"]) + "'"
-                    note = True
-
-            md += "\ndate: " + str(pub_date) 
-
-            md += "\nvenue: '" + html_escape(venue) + "'"
-            
-            url = False
-            if "url" in b.keys():
-                if len(str(b["url"])) > 5:
-                    md += "\npaperurl: '" + b["url"] + "'"
-                    url = True
-
-            md += "\ncitation: '" + html_escape(citation) + "'"
-
-            md += "\n---"
-
-            
-            ## Markdown description for individual page
-            if note:
-                md += "\n" + html_escape(b["note"]) + "\n"
-
-            if url:
-                md += "\n[Access paper here](" + b["url"] + "){:target=\"_blank\"}\n" 
+            status = write_if_changed(output_dir / md_filename, markdown, dry_run=dry_run)
+            if status == "unchanged":
+                unchanged_files += 1
             else:
-                md += "\nUse [Google Scholar](https://scholar.google.com/scholar?q="+html.escape(clean_title.replace("-","+"))+"){:target=\"_blank\"} for full citation"
+                written_files += 1
 
-            md_filename = os.path.basename(md_filename)
+            print(f"parsed source={source_name} id={bib_id} file={md_filename}")
+        except KeyError as error:
+            skipped_entries += 1
+            print(
+                f"WARNING source={source_name} id={bib_id}: missing expected field {error}",
+                file=sys.stderr,
+            )
+        except ValueError as error:
+            skipped_entries += 1
+            print(
+                f"WARNING source={source_name} id={bib_id}: {error}",
+                file=sys.stderr,
+            )
 
-            with open("../_publications/" + md_filename, 'w', encoding="utf-8") as f:
-                f.write(md)
-            print(f'SUCESSFULLY PARSED {bib_id}: \"', b["title"][:60],"..."*(len(b['title'])>60),"\"")
-        # field may not exist for a reference
-        except KeyError as e:
-            print(f'WARNING Missing Expected Field {e} from entry {bib_id}: \"', b["title"][:30],"..."*(len(b['title'])>30),"\"")
-            continue
+    return total_entries, written_files, unchanged_files, skipped_entries
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Generate publication markdown files from BibTeX sources."
+    )
+    parser.add_argument(
+        "--sources",
+        nargs="+",
+        default=tuple(DEFAULT_SOURCES.keys()),
+        help="Source names to process (default: all).",
+    )
+    parser.add_argument(
+        "--output-dir",
+        default=str(SCRIPT_DIR.parent / "_publications"),
+        help="Directory where generated markdown files are written.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Validate and render without writing files.",
+    )
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    output_dir = pathlib.Path(args.output_dir)
+
+    parser = create_bib_parser()
+    if parser is None:
+        print(
+            "WARNING: pybtex is not installed. Install with `pip install pybtex` to enable BibTeX generation.",
+            file=sys.stderr,
+        )
+        print("pubsFromBib: mode=skipped entries=0 written=0 unchanged=0 skipped=0")
+        return 0
+
+    try:
+        source_iter = list(iter_sources(args.sources))
+    except ValueError as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+
+    total_entries = 0
+    written_files = 0
+    unchanged_files = 0
+    skipped_entries = 0
+
+    for source_name, config in source_iter:
+        total, written, unchanged, skipped = process_source(
+            source_name=source_name,
+            config=config,
+            output_dir=output_dir,
+            dry_run=args.dry_run,
+            parser=parser,
+        )
+        total_entries += total
+        written_files += written
+        unchanged_files += unchanged
+        skipped_entries += skipped
+
+    mode_text = "dry-run" if args.dry_run else "write"
+    print(
+        f"pubsFromBib: mode={mode_text} entries={total_entries} written={written_files} "
+        f"unchanged={unchanged_files} skipped={skipped_entries}"
+    )
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

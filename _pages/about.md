@@ -5,172 +5,9 @@ redirect_from:
   - /about/
   - /about.html
 ---
-<style>
-    .experience-card {
-        display: flex;
-        align-items: center;
-        background: #f9f9f9;
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 0px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .experience-card:hover {
-       
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    }
-    .experience-logo {
-        width: 60px;
-        height: 60px;
-        margin-right: 20px;
-        border-radius: 8px;
-        object-fit: contain;
-    }
-    .experience-info {
-        font-family: "Segoe UI", sans-serif;
-    }
-    .experience-info strong {
-        font-size: 1.1em;
-    }
-    .experience-info a {
-        text-decoration: none;
-        color: #ca6f6f;
-    }
-    .experience-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
-    .experience-card {
-        box-sizing: border-box;
-    }
-    .publication-card {
-        display: flex;
-        align-items: center;
-        padding: 3px;
-        border: 1.5px solid #ddd;
-        border-radius: 8px;
-        background: #fff;
-        box-sizing: border-box;
-        margin-bottom: 20px; 
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+<div class="home-page-content">
 
-        color: #5f6368; /* 正文整体更浅 */
-    }
-    .publication-card > div > strong,
-    .publication-card > div > div > strong {
-        color: #202124;
-    }
-    .publication-card i {
-        color: #6b7280;
-    }
-    .publication-card:hover {
-       
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    }
-
-    .publication-card.featured {
-        border-color: #f5bba7;       /* 更浅的哈密瓜色边框 */
-        background: #fef5f1;         /* 非常浅的哈密瓜色背景 */
-        box-shadow: 0 4px 8px rgba(242, 166, 120, 0.2); /* 更柔和的初始阴影 */
-        z-index: 10;
-    }
-
-    .publication-card.featured:hover {
-        box-shadow: 0 8px 16px rgba(242, 166, 120, 0.4); 
-    }
-    
-    .publication-card.non-featured {
-        display: flex; /* 默认隐藏非精选出版物 */
-    }
-    
-    .pub-button-container {
-        display: flex;
-        gap: 10px;
-        margin: 20px 0;
-        flex-wrap: wrap;
-    }
-    
-    .pub-button {
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        border-radius: 20px;
-        padding: 8px 16px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .pub-button:hover {
-        background-color: #e0e0e0;
-    }
-    
-    .pub-button.active {
-        background-color: #ca6f6f;
-        color: white;
-        border-color: #ca6f6f;
-    }
-
-    /* Projects cards: keep styles independent from publications */
-    .project-card {
-        display: flex;
-        align-items: center;
-        padding: 3px;
-        border: 1.5px solid #ddd;
-        border-radius: 8px;
-        background: #fff;
-        box-sizing: border-box;
-        margin-bottom: 20px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-        color: #5f6368;
-    }
-
-    .project-card > div > strong,
-    .project-card > div > div > strong {
-        color: #202124;
-    }
-
-    .project-card i {
-        color: #6b7280;
-    }
-
-    .project-card:hover {
-        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    }
-
-</style>
-<html> 
-<head>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Homemade+Apple&display=swap');
-        body {
-            background-color:	 #FFFFFF;
-            font-family: 'Arial Rounded MT Bold', 'Verdana', sans-serif;
-            font-size: 15px;
-        }
-        .main-heading {
-            font-family: 'Permanent Marker', cursive;
-            text-align: center;
-            color: #ca6f6f;
-        }
-        div.markdown-body a,a {
-            text-decoration: none !important;
-            color: #ca6f6f;
-            transition: all 0.3s ease; /* 平滑过渡效果 */
-        }
-        div.markdown-body a:hover, a:hover {
-            color: #c71585;            /* 悬浮时变深一点的颜色 */
-            text-decoration: underline; /* 加上悬浮时的下划线 */
-        }
-    </style>
-</head>
-<body>
-<h1 class="main-heading">Hi there <img src="images/Hi.gif" width="40px"> Welcome to my Homepage!</h1>
-</body>
-</html>
+<h1 class="main-heading">Hi there <img class="heading-icon" src="images/Hi.gif" width="40" height="40" alt="waving hand"> Welcome to my Homepage!</h1>
 
 I am an undergraduate (2022-2026) at Xidian University, focusing on Computer Vision and Robot Learning.
 
@@ -183,7 +20,7 @@ News
 ---------------
 - *[Dense Policy](https://selen-suyue.github.io/DspNet) is accepted in ICCV 2025 &#128293;*
 - *[MBA](https://selen-suyue.github.io/MBApage) is accepted in IEEE RA-L 2025 &#128293;*
-- *Our work [Advdisplay]() was accepted at AAAI 2025 &#128293;*
+- *Our work AdvDisplay was accepted at AAAI 2025 &#128293;*
 - *In charge of [Microsoft Club](https://github.com/MSC-XDU). Feel free to reach out if you'd like to join.*
 
 Experience
@@ -239,56 +76,56 @@ Experience
 Publications
 --------------
 <div class="pub-button-container">
-  <button class="pub-button active" onclick="showPublications('all')">All Publications</button>
-  <button class="pub-button" onclick="showPublications('featured')">Selected Only</button>
+  <button class="pub-button active" type="button" data-filter="all" aria-pressed="true">All Publications</button>
+  <button class="pub-button" type="button" data-filter="featured" aria-pressed="false">Selected Only</button>
 </div>
 
 <div class="publication-card">
-  <div style="display: flex; align-items: center;">
-    <video width="200" height="120" style="margin-right: 20px; border-radius: 8px;" autoplay loop muted playsinline>
+  <div class="media-row">
+    <video class="pub-media" width="200" height="120" autoplay loop muted playsinline preload="metadata" poster="images/dobot.png">
       <source src="images/clap.mp4" type="video/mp4">
     </video>
     <div>
         <strong>CLAP: Contrastive Latent Action Pretraining for Learning Vision-Language-Action Models from Human Videos</strong><br>
-        <i style="font-size: 13px;">
-            <a href="https://lin-shan.com/" target="_blank">Chubin Zhang</a>*,
-            <a href="https://scholar.google.com/citations?user=mt5mvZ8AAAAJ&hl=en" target="_blank">Jianan Wang</a>*, 
-            <a href="" target="_blank">Zifeng Gao</a>, 
-            <a href="https://selen-suyue.github.io" target="_blank"><strong>Yue Su</strong></a>, 
-            <a href="" target="_blank">Tiranru Dai</a>,
-            <a href="https://homepage.zhouc.ai/" target="_blank">Cai Zhou</a>, <br>
-            <a href="https://ivg.au.tsinghua.edu.cn/Jiwen_Lu/" target="_blank">Jiwen Lu</a>,
-            <a href="https://andytang15.github.io/" target="_blank">Yansong Tang</a>&dagger;
+        <i class="author-list">
+            <a href="https://lin-shan.com/" target="_blank" rel="noopener noreferrer">Chubin Zhang</a>*,
+            <a href="https://scholar.google.com/citations?user=mt5mvZ8AAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Jianan Wang</a>*, 
+            Zifeng Gao, 
+            <a href="https://selen-suyue.github.io" target="_blank" rel="noopener noreferrer"><strong>Yue Su</strong></a>, 
+            Tiranru Dai,
+            <a href="https://homepage.zhouc.ai/" target="_blank" rel="noopener noreferrer">Cai Zhou</a>, <br>
+            <a href="https://ivg.au.tsinghua.edu.cn/Jiwen_Lu/" target="_blank" rel="noopener noreferrer">Jiwen Lu</a>,
+            <a href="https://andytang15.github.io/" target="_blank" rel="noopener noreferrer">Yansong Tang</a>&dagger;
         </i><br>
         Learning Vision-Language-Action Models from Human Videos.
         <br>
-        <b><i style="color:#83a1c7;">ArXiv Preprint &nbsp;</i></b>
+        <b><i class="venue-tag">ArXiv Preprint &nbsp;</i></b>
         <a href="https://arxiv.org/abs/2601.04061"><em>[arXiv]</em></a>
-        <a href=""><em>[code]</em></a>
+        <em>[code coming soon]</em>
         <a href="https://lin-shan.com/CLAP/#"><em>[website]</em></a>
     </div>
   </div>
 </div>
 
 <div class="publication-card featured">
-  <div style="display: flex; align-items: center;">
-    <video width="200" height="120" style="margin-right: 20px; border-radius: 8px;" autoplay loop muted playsinline>
+  <div class="media-row">
+    <video class="pub-media" width="200" height="120" autoplay loop muted playsinline preload="metadata" poster="images/dsp.png">
       <source src="images/dspv2.mp4" type="video/mp4">
     </video>
     <div>
         <strong>DSPv2: Improved Dense Policy for Effective and Generalizable Whole-body Mobile Manipulation</strong><br>
-        <i style="font-size: 13px;">
-            <a href="https://selen-suyue.github.io" target="_blank"><strong>Yue Su</strong></a>, 
-            <a href="https://lin-shan.com/" target="_blank">Chubin Zhang</a>, 
-            <a href="https://ch3cook-fdu.github.io/" target="_blank">Sijin Chen</a>,
-            <a href="" target="_blank">Liufan Tan</a>, <br>
-            <a href="https://andytang15.github.io/" target="_blank">Yansong Tang</a>,
-            <a href="https://scholar.google.com/citations?user=mt5mvZ8AAAAJ&hl=en" target="_blank">Jianan Wang</a>,
-            <a href="https://xh-liu.github.io/" target="_blank">Xihui Liu</a>&dagger;
+        <i class="author-list">
+            <a href="https://selen-suyue.github.io" target="_blank" rel="noopener noreferrer"><strong>Yue Su</strong></a>, 
+            <a href="https://lin-shan.com/" target="_blank" rel="noopener noreferrer">Chubin Zhang</a>, 
+            <a href="https://ch3cook-fdu.github.io/" target="_blank" rel="noopener noreferrer">Sijin Chen</a>,
+            Liufan Tan, <br>
+            <a href="https://andytang15.github.io/" target="_blank" rel="noopener noreferrer">Yansong Tang</a>,
+            <a href="https://scholar.google.com/citations?user=mt5mvZ8AAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Jianan Wang</a>,
+            <a href="https://xh-liu.github.io/" target="_blank" rel="noopener noreferrer">Xihui Liu</a>&dagger;
         </i><br>
         Improved Dense Policy for Whole-body Mobile Manipulation, with effective perception, generalizable manipulation and coherent actions.
         <br>
-        <b><i style="color:#83a1c7;">ArXiv Preprint &nbsp;</i></b>
+        <b><i class="venue-tag">ArXiv Preprint &nbsp;</i></b>
         <a href="https://arxiv.org/abs/2509.16063"><em>[arXiv]</em></a>
         <a href="https://github.com/Selen-Suyue/DSPv2"><em>[code]</em></a>
         <a href="https://selen-suyue.github.io/DSPv2Net/"><em>[website]</em></a>
@@ -297,24 +134,24 @@ Publications
 </div>
 
 <div class="publication-card featured">
- <div style="display: flex; align-items: center;">
-    <video width="200" height="120" style="margin-right: 20px; border-radius: 8px;" autoplay loop muted playsinline>
+ <div class="media-row">
+    <video class="pub-media" width="200" height="120" autoplay loop muted playsinline preload="metadata" poster="images/dsp.png">
       <source src="images/flower_dsp.mp4" type="video/mp4">
     </video>
     <div>
         <strong>Dense Policy: Bidirectional Autoregressive Learning of Actions</strong><br>
-        <i style="font-size: 13px;">
-            <a href="https://selen-suyue.github.io" target="_blank"><strong>Yue Su</strong></a>*, 
-            <a href="https://scholar.google.com/citations?user=WurpqEMAAAAJ&hl=en" target="_blank">Xinyu Zhan</a>*, 
-            <a href="https://tonyfang.net/" target="_blank">Hongjie Fang</a>, 
-            <a href="https://hanxue.me/" target="_blank">Han Xue</a>, <br>
-            <a href="https://fang-haoshu.github.io/" target="_blank">Haoshu Fang</a>, 
-            <a href="https://dirtyharrylyl.github.io/" target="_blank">Yong-Lu Li</a>, 
-            <a href="http://mvig.org" target="_blank">Cewu Lu</a>, 
-            <a href="https://lixiny.github.io" target="_blank">Lixin Yang</a>&dagger;
+        <i class="author-list">
+            <a href="https://selen-suyue.github.io" target="_blank" rel="noopener noreferrer"><strong>Yue Su</strong></a>*, 
+            <a href="https://scholar.google.com/citations?user=WurpqEMAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Xinyu Zhan</a>*, 
+            <a href="https://tonyfang.net/" target="_blank" rel="noopener noreferrer">Hongjie Fang</a>, 
+            <a href="https://hanxue.me/" target="_blank" rel="noopener noreferrer">Han Xue</a>, <br>
+            <a href="https://fang-haoshu.github.io/" target="_blank" rel="noopener noreferrer">Haoshu Fang</a>, 
+            <a href="https://dirtyharrylyl.github.io/" target="_blank" rel="noopener noreferrer">Yong-Lu Li</a>, 
+            <a href="http://mvig.org" target="_blank" rel="noopener noreferrer">Cewu Lu</a>, 
+            <a href="https://lixiny.github.io" target="_blank" rel="noopener noreferrer">Lixin Yang</a>&dagger;
         </i><br>
         Propose Dense Policy, A bidirectional robotic autoregressive policy, which infers trajectories by gradually expanding actions from sparse keyframes, demonstrated exceeding diffusion policies.<br>
-        <b><i style="color:#83a1c7;">ICCV 2025 &nbsp;</i></b>
+        <b><i class="venue-tag">ICCV 2025 &nbsp;</i></b>
         <a href="https://openaccess.thecvf.com/content/ICCV2025/html/Su_Dense_Policy_Bidirectional_Autoregressive_Learning_of_Actions_ICCV_2025_paper.html"><em>[paper]</em></a>
         <a href="https://arxiv.org/abs/2503.13217"><em>[arXiv]</em></a>
         <a href="https://selen-suyue.github.io/DspNet/"><em>[website]</em></a>
@@ -325,20 +162,20 @@ Publications
 </div>
 
 <div class="publication-card featured">
- <div style="display: flex; align-items: center;">
-    <img src="images/mba_animation.gif" alt="MBA" width="200" height="100" style="margin-right: 20px;">
+ <div class="media-row">
+    <img class="pub-media" src="images/mba_animation.gif" alt="MBA" width="200" height="100" loading="lazy" decoding="async">
     <div>
         <strong>Motion Before Action: Diffusing Object Motion as Manipulation Condition</strong><br>
-        <i style="font-size: 13px;">
-            <a href="https://selen-suyue.github.io" target="_blank"><strong>Yue Su</strong></a>*, 
-            <a href="https://scholar.google.com/citations?user=WurpqEMAAAAJ&hl=en" target="_blank">Xinyu Zhan</a>*, 
-            <a href="https://tonyfang.net/" target="_blank">Hongjie Fang</a>, 
-            <a href="https://dirtyharrylyl.github.io/" target="_blank">Yong-Lu Li</a>, 
-            <a href="http://mvig.org" target="_blank">Cewu Lu</a>, 
-            <a href="https://lixiny.github.io" target="_blank">Lixin Yang</a>&dagger;
+        <i class="author-list">
+            <a href="https://selen-suyue.github.io" target="_blank" rel="noopener noreferrer"><strong>Yue Su</strong></a>*, 
+            <a href="https://scholar.google.com/citations?user=WurpqEMAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Xinyu Zhan</a>*, 
+            <a href="https://tonyfang.net/" target="_blank" rel="noopener noreferrer">Hongjie Fang</a>, 
+            <a href="https://dirtyharrylyl.github.io/" target="_blank" rel="noopener noreferrer">Yong-Lu Li</a>, 
+            <a href="http://mvig.org" target="_blank" rel="noopener noreferrer">Cewu Lu</a>, 
+            <a href="https://lixiny.github.io" target="_blank" rel="noopener noreferrer">Lixin Yang</a>&dagger;
         </i><br>
         Propose MBA, a novel plug-and-play module leveraging cascaded diffusion processes to generate actions guided by object motion, enabling seamless integration with manipulation policies.<br>
-      <b><i style="color:#83a1c7;">RA-L 2025, ICRA 2026 &nbsp;</i></b>
+      <b><i class="venue-tag">RA-L 2025, ICRA 2026 &nbsp;</i></b>
         <a href="https://ieeexplore.ieee.org/abstract/document/11027642"><em>[paper]</em></a>
         <a href="https://arxiv.org/abs/2411.09658"><em>[arxiv]</em></a> 
         <a href="https://selen-suyue.github.io/MBApage"><em>[website]</em></a>
@@ -348,46 +185,45 @@ Publications
 </div>
 
 <div class="publication-card non-featured">
-    <img src="images/GAP.png" alt="RIaa" width="200" height="100" style="margin-right: 20px;">
+    <img class="pub-media" src="images/GAP.png" alt="RIaa" width="200" height="100" loading="lazy" decoding="async">
     <div>
         <strong>Generative Adversarial Patches for Physical Attacks on Cross-Modal Pedestrian Re-Identification</strong><br>
-       <i style="font-size: 13px;">
-    <a href="https://selen-suyue.github.io" target="_blank"><strong>Yue Su</strong></a>, 
-    <a href="https://scholar.google.com/citations?user=JkQmO-kAAAAJ&hl=en" target="_blank">Hao Li</a>&dagger;, 
-    <a href="https://web.xidian.edu.cn/mggong/" target="_blank">Maoguo Gong</a>&dagger;
+       <i class="author-list">
+    <a href="https://selen-suyue.github.io" target="_blank" rel="noopener noreferrer"><strong>Yue Su</strong></a>, 
+    <a href="https://scholar.google.com/citations?user=JkQmO-kAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Hao Li</a>&dagger;, 
+    <a href="https://web.xidian.edu.cn/mggong/" target="_blank" rel="noopener noreferrer">Maoguo Gong</a>&dagger;
     </i><br>
     A generative physical adversarial attack on VI-ReID models perturbs modality-invariant features. <br>
-    <b><i style="color:#83a1c7;">ArXiv Preprint &nbsp;</i></b>
+    <b><i class="venue-tag">ArXiv Preprint &nbsp;</i></b>
       <a href="https://arxiv.org/abs/2410.20097"><em>[arxiv]</em></a>
     </div>
 </div>
 
 <div class="publication-card non-featured">
-    <img src="images/iraa.png" alt="Raa" width="200" height="100" style="margin-right: 20px;">
+    <img class="pub-media" src="images/iraa.png" alt="Raa" width="200" height="100" loading="lazy" decoding="async">
     <div>
         <strong>AdvDisplay: Adversarial Display Assembled by Thermoelectric Cooler for Fooling Thermal Infrared Detectors</strong><br>
-      <i style="font-size: 13px;">
-    <a href="https://scholar.google.com/citations?user=JkQmO-kAAAAJ&hl=en" target="_blank">Hao Li</a>&dagger;, 
-    <a href="https://scholar.google.com/citations?user=eX7Ra5UAAAAJ&hl=en" target="_blank">Fanggao Wan</a>, 
-    <a href="https://selen-suyue.github.io" target="_blank"><strong>Yue Su</strong></a>, 
-    <a href="https://ywuchina.github.io/" target="_blank">Yue Wu</a>, 
-    <a href="https://scholar.google.com/citations?user=h4PExPwAAAAJ&hl=en" target="_blank">Mingyang Zhang</a>, 
-    <a href="https://web.xidian.edu.cn/mggong/" target="_blank">Maoguo Gong</a>&dagger;
+      <i class="author-list">
+    <a href="https://scholar.google.com/citations?user=JkQmO-kAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Hao Li</a>&dagger;, 
+    <a href="https://scholar.google.com/citations?user=eX7Ra5UAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Fanggao Wan</a>, 
+    <a href="https://selen-suyue.github.io" target="_blank" rel="noopener noreferrer"><strong>Yue Su</strong></a>, 
+    <a href="https://ywuchina.github.io/" target="_blank" rel="noopener noreferrer">Yue Wu</a>, 
+    <a href="https://scholar.google.com/citations?user=h4PExPwAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Mingyang Zhang</a>, 
+    <a href="https://web.xidian.edu.cn/mggong/" target="_blank" rel="noopener noreferrer">Maoguo Gong</a>&dagger;
     </i><br>
       Historically, infrared adversarial attacks were single-use and tough to deploy. Using TEC, we implemented efficient attacks adaptable to hardware scenarios.
       <br>
-      <b><i style="color:#83a1c7;">AAAI 2025 &nbsp;</i></b>
+      <b><i class="venue-tag">AAAI 2025 &nbsp;</i></b>
       <a href="https://ojs.aaai.org/index.php/AAAI/article/view/34011"><em>[paper]</em></a>
     </div>
 </div>
 
-<script src="assets/js/show_publications.js"></script>
 
 Projects
 --------
 <div class="project-card">
- <div style="display: flex; align-items: center;">
-    <img src="images/MetaPalace.png" alt="MetaPalace" width="200" height="100" style="margin-right: 20px;">
+ <div class="media-row">
+    <img class="project-media" src="images/MetaPalace.png" alt="MetaPalace" width="200" height="100" loading="lazy" decoding="async">
     <div>
         <strong>MetaPalace: Let you in a meta world of The Palace Museum</strong><br>
 We've done what the Old Palace official website couldn't: offering 3D artifact views with single-view reconstruction and an interactive LLM-powered tour guider using RAG technology. <br>
@@ -410,3 +246,5 @@ Talks
 - [2025/12] Invited to [Talk on NICE seminar](https://www.bilibili.com/video/BV1utBrBfED4?spm_id_from=333.788.videopod.episodes&p=9) about Imitation Learning
 - [2025/12] Invited to [Talk on RL China](https://b23.tv/We6FLQh) about DSPv2
 - [2025/10] Invited to [Talk on 3D视觉工坊](https://b23.tv/PvLKNR1) about DSP and DSPv2
+
+</div>

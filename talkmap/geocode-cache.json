@@ -1,0 +1,18 @@
+{
+  "Berkeley CA, USA": {
+    "latitude": 37.8708393,
+    "longitude": -122.2728638
+  },
+  "London, UK": {
+    "latitude": 51.5073219,
+    "longitude": -0.1276473
+  },
+  "Los Angeles, CA": {
+    "latitude": 34.0543942,
+    "longitude": -118.2439408
+  },
+  "San Francisco, California": {
+    "latitude": 37.7792808,
+    "longitude": -122.4192362
+  }
+}
